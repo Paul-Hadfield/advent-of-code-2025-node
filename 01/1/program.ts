@@ -1,3 +1,8 @@
+import * as fs from "fs";
+import { performance } from "perf_hooks";
+
+const start = performance.now();
+
 const MAX_POSITION = 99;
 
 export function turnRight(startingPosition: number, clicks: number): number {
@@ -43,4 +48,17 @@ export function turn(startingPosition: number, instruction: string): number {
         turnLeft(startingPosition, parsed.clicks);
 }
 
-console.log(turn(5, "L10"));
+const lines = fs.readFileSync("./data.txt", "utf8").trim().split("\n");
+
+let value = 50;
+let password = 0;
+
+lines.forEach(line => {
+    value = turn(value, line);
+    if (value === 0) { password++; }
+});
+
+console.log(`Password is ${password}`);
+
+const durationMs = performance.now() - start;
+console.log(`Execution time: ${durationMs.toFixed(3)}ms`);
