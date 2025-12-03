@@ -7,38 +7,26 @@ const MAX_POSITION = 99;
 
 export function turnRight(startingPosition: number, clicks: number): number {
     
-    let newValue = startingPosition;
+    const finalTurn = clicks % (MAX_POSITION + 1);
 
-    while (true) {
-        newValue = newValue + clicks;
-        if (newValue < MAX_POSITION) {
-            return newValue;
-        }
-
-        newValue = newValue - MAX_POSITION - 1;
-        if (newValue <= MAX_POSITION) {
-           return newValue;
-        }
-
-        
+    const newValue = startingPosition + finalTurn;
+    if (newValue < MAX_POSITION) {
+        return newValue;
     }
+
+    return newValue - MAX_POSITION - 1;
 }
 
 export function turnLeft(startingPosition: number, clicks: number): number {
 
-    let newValue = startingPosition;
+    const finalTurn = clicks % (MAX_POSITION + 1);
 
-    while (true) {
-        newValue = newValue - clicks;
-        if (newValue >= 0) {
-            return newValue;
-        }
+    const newValue = startingPosition - finalTurn;
+    if (newValue >= 0) {
+        return newValue;
+    }
 
-        newValue = MAX_POSITION + newValue + 1;
-        if (newValue >= 0) {
-            return newValue;
-        }
-    }   
+    return MAX_POSITION + newValue + 1;
 }
 
 export function parseInstruction(instruction: string): { direction: 'R' | 'L', clicks: number } {
@@ -50,13 +38,13 @@ export function parseInstruction(instruction: string): { direction: 'R' | 'L', c
 
 export function turn(startingPosition: number, instruction: string): number {
     const parsed = parseInstruction(instruction);
-
+    console.log(`Turning from ${startingPosition} to the ${parsed.direction} by ${parsed.clicks} clicks.`);
     return (parsed.direction === 'R') ?
         turnRight(startingPosition, parsed.clicks) :
         turnLeft(startingPosition, parsed.clicks);
 }
 
-const lines = fs.readFileSync("./example.txt", "utf8").trim().split("\n");
+const lines = fs.readFileSync("./data.txt", "utf8").trim().split("\n");
 
 let value = 50;
 let password = 0;
