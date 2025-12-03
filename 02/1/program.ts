@@ -20,7 +20,7 @@ function getMinMax(part: string): { min: number, max: number }{
     return { min: Math.min(...parts), max: Math.max(...parts) };
 }
 
-const parts = fs.readFileSync("./example.txt", "utf8").trim().split(",");
+const parts = fs.readFileSync("./data.txt", "utf8").trim().split(",");
 let sum = 0;
 
 parts.forEach(part => {
