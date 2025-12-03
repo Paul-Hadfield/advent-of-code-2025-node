@@ -6,31 +6,39 @@ const start = performance.now();
 const MAX_POSITION = 99;
 
 export function turnRight(startingPosition: number, clicks: number): number {
-    const newValue = startingPosition + clicks;
-    if (newValue < MAX_POSITION) {
-        return newValue;
-    }
+    
+    let newValue = startingPosition;
 
-    const updatedPosition = newValue - MAX_POSITION - 1;
-    if (updatedPosition > MAX_POSITION) {
-        throw new Error('Something went wrong');
-    }
+    while (true) {
+        newValue = newValue + clicks;
+        if (newValue < MAX_POSITION) {
+            return newValue;
+        }
 
-    return updatedPosition;
+        newValue = newValue - MAX_POSITION - 1;
+        if (newValue <= MAX_POSITION) {
+           return newValue;
+        }
+
+        
+    }
 }
 
 export function turnLeft(startingPosition: number, clicks: number): number {
-    const newValue = startingPosition - clicks;
-    if (newValue >= 0) {
-        return newValue;
-    }
 
-    const updatedPosition = MAX_POSITION + newValue + 1;
-    if (updatedPosition < 0){
-        throw new Error('Something went wrong');
-    }
+    let newValue = startingPosition;
 
-    return updatedPosition; 
+    while (true) {
+        newValue = newValue - clicks;
+        if (newValue >= 0) {
+            return newValue;
+        }
+
+        newValue = MAX_POSITION + newValue + 1;
+        if (newValue >= 0) {
+            return newValue;
+        }
+    }   
 }
 
 export function parseInstruction(instruction: string): { direction: 'R' | 'L', clicks: number } {
@@ -48,7 +56,7 @@ export function turn(startingPosition: number, instruction: string): number {
         turnLeft(startingPosition, parsed.clicks);
 }
 
-const lines = fs.readFileSync("./data.txt", "utf8").trim().split("\n");
+const lines = fs.readFileSync("./example.txt", "utf8").trim().split("\n");
 
 let value = 50;
 let password = 0;
